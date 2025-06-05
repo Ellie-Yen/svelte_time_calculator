@@ -66,3 +66,19 @@ export const timestampFromGolang = (timestamp: number): number => {
 export const timestampFromPython = (timestamp: number): number => {
 	return timestamp * 1_000;
 };
+
+/**
+ * @param timestamp in milliseconds
+ * @returns timestamp in UNIX seconds
+ */
+export const timestampToUNIX = (timestamp: number) => {
+	return Math.floor(timestamp / 1_000);
+};
+
+/**
+ * @param timestamp in milliseconds
+ * @returns timestamp in UNIX nanoseconds
+ */
+export const timestampToUNIXNanosecond = (timestamp: number): number => {
+	return timestamp * 1_000_000;
+};
