@@ -1,3 +1,5 @@
+import { formatDate } from './formatters';
+
 /**
  * @description Converts a date string to a timestamp in milliseconds.
  */
@@ -29,42 +31,11 @@ export const timestampToDate = (timestampInMS: number, timeZone?: string): strin
 		if (isNaN(date.getTime())) {
 			throw new Error('Invalid timestamp');
 		}
-		if (timeZone) {
-			// If a time zone is provided, format the date accordingly
-			return date.toLocaleString('en-US', { timeZone });
-		}
-		return date.toISOString();
+		return formatDate(date, timeZone);
 	} catch (error) {
 		console.error('Invalid timestamp:', timestampInMS, error);
 		return ''; // Return an empty string or handle the error as needed
 	}
-};
-
-/**
- * @description Converts a timestamp from Golang format to milliseconds for javascript.
- * @param timestamp in UNIX seconds or nanoseconds
- * @returns timestamp in milliseconds
- */
-export const timestampFromGolang = (timestamp: number): number => {
-	if (timestamp < 1_000_000_000) {
-		// If the timestamp is in seconds, convert to milliseconds
-		return timestamp * 1_000;
-	} else if (timestamp < 1_000_000_000_000) {
-		// If the timestamp is in milliseconds, return as is
-		return timestamp;
-	} else {
-		// If the timestamp is in nanoseconds, convert to milliseconds
-		return Math.floor(timestamp / 1_000_000);
-	}
-};
-
-/**
- * @description Converts a timestamp from Python format to milliseconds for javascript.
- * @param timestamp in UNIX seconds
- * @returns timestamp in milliseconds
- */
-export const timestampFromPython = (timestamp: number): number => {
-	return timestamp * 1_000;
 };
 
 /**
@@ -81,4 +52,61 @@ export const timestampToUNIX = (timestamp: number) => {
  */
 export const timestampToUNIXNanosecond = (timestamp: number): number => {
 	return timestamp * 1_000_000;
+};
+
+/**
+ * @description convert timestamp from user input to milliseconds for javascript.
+ * @param timestamp in UNIX seconds or nanoseconds
+ * @returns timestamp in milliseconds
+ */
+
+export const convertTimestamp = (timestampStr: string): number => {
+	try {
+		const timestamp = parseInt(timestampStr, 10);
+
+		if (isNaN(timestamp)) {
+			return timestamp;
+		}
+
+		const digitCount = Math.abs(timestamp).toString().length;
+
+		// Define reasonable time boundaries
+		const MIN_SECONDS = 0; // 1970-01-01
+		const MAX_SECONDS = 4102444800; // 2100-01-01
+
+		// Seconds: 9-11 digits
+		if (digitCount >= 9 && digitCount <= 11) {
+			if (timestamp >= MIN_SECONDS && timestamp <= MAX_SECONDS) {
+				return timestamp * 1000; // Convert seconds to milliseconds
+			}
+		}
+
+		// Milliseconds: 12-14 digits
+		else if (digitCount >= 12 && digitCount <= 14) {
+			const timestampSeconds = Math.floor(timestamp / 1000);
+			if (timestampSeconds >= MIN_SECONDS && timestampSeconds <= MAX_SECONDS) {
+				return timestamp; // Already in milliseconds
+			}
+		}
+
+		// Microseconds: 15-17 digits
+		else if (digitCount >= 15 && digitCount <= 17) {
+			const timestampSeconds = Math.floor(timestamp / 1_000_000);
+			if (timestampSeconds >= MIN_SECONDS && timestampSeconds <= MAX_SECONDS) {
+				return timestamp / 1000; // Convert microseconds to milliseconds
+			}
+		}
+
+		// Nanoseconds: 18-20 digits
+		else if (digitCount >= 18 && digitCount <= 20) {
+			const timestampSeconds = Math.floor(timestamp / 1_000_000_000);
+			if (timestampSeconds >= MIN_SECONDS && timestampSeconds <= MAX_SECONDS) {
+				return timestamp / 1_000_000; // Convert nanoseconds to milliseconds
+			}
+		}
+
+		return NaN;
+	} catch (error) {
+		return NaN;
+	}
 };
