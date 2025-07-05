@@ -11,6 +11,7 @@
 		handleChangeAmountUpdate
 	} from '../lib/shared.svelte';
 	import InputArea from './InputArea.svelte';
+	import DurationInputSection from './durationInputSection.svelte';
 
 	$effect(() => {
 		handleChangeAmountUpdate();
@@ -22,28 +23,14 @@
 		<h1>Input</h1>
 		<InputArea state={initialState} updator={updateInitialState} />
 	</div>
-
 	<div class="displayer">
-		<h1>Duration change</h1>
+		<DurationInputSection {changeAmount} />
 		<div class="flex flex-col gap-2">
-			<label>
-				<input type="number" bind:value={changeAmount.days} class="input" />
-				Days
-			</label>
-			<label>
-				<input type="number" bind:value={changeAmount.hours} class="input" />
-				Hours
-			</label>
-			<label>
-				<input type="number" bind:value={changeAmount.minutes} class="input" />
-				Minutes
-			</label>
 			<button onclick={resetChangeAmount} class="btn">Reset Duration</button>
-			<button onclick={switchStates} class="btn">Switch</button>
-			<button onclick={resetStates} class="btn">Reset</button>
+			<button onclick={switchStates} class="btn">Switch Input/Result</button>
+			<button onclick={resetStates} class="btn">Reset All</button>
 		</div>
 	</div>
-
 	<div class="displayer">
 		<h1>Result</h1>
 		<InputArea state={resultState} updator={updateResultState} />
