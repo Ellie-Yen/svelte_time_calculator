@@ -3,15 +3,18 @@
 		initialState,
 		updateInitialState,
 		resultState,
-		updateResultState
+		updateResultState,
+		switchStates,
+		resetStates,
+		changeAmount,
+		resetChangeAmount,
+		handleChangeAmountUpdate
 	} from '../lib/shared.svelte';
 	import InputArea from './InputArea.svelte';
 
-	let addHour = $state(0);
-	const increaseAddHour = () => {
-		addHour += 1;
-		updateResultState(initialState.timestamp + addHour * 3600 * 1000);
-	};
+	$effect(() => {
+		handleChangeAmountUpdate();
+	});
 </script>
 
 <div class="timestamp-displayer flex flex-row gap-4">
@@ -21,9 +24,26 @@
 	</div>
 
 	<div class="displayer">
-		<h1>Actions</h1>
-		<button onclick={increaseAddHour} class="btn">+{addHour} hour</button>
+		<h1>Duration change</h1>
+		<div class="flex flex-col gap-2">
+			<label>
+				<input type="number" bind:value={changeAmount.days} class="input" />
+				Days
+			</label>
+			<label>
+				<input type="number" bind:value={changeAmount.hours} class="input" />
+				Hours
+			</label>
+			<label>
+				<input type="number" bind:value={changeAmount.minutes} class="input" />
+				Minutes
+			</label>
+			<button onclick={resetChangeAmount} class="btn">Reset Duration</button>
+			<button onclick={switchStates} class="btn">Switch</button>
+			<button onclick={resetStates} class="btn">Reset</button>
+		</div>
 	</div>
+
 	<div class="displayer">
 		<h1>Result</h1>
 		<InputArea state={resultState} updator={updateResultState} />
