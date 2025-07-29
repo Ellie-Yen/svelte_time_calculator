@@ -25,30 +25,15 @@
 	<h2 class="text-lg font-semibold">Duration Change</h2>
 	<div class="flex flex-col gap-2">
 		<div class="flex items-center gap-2">
-			<Input
-				type="number"
-				value={days}
-				oninput={handleDaysChange}
-				placeholder="0"
-			/>
+			<Input type="number" value={days} oninput={handleDaysChange} placeholder="0" />
 			<span class="text-sm text-gray-600">Days</span>
 		</div>
 		<div class="flex items-center gap-2">
-			<Input
-				type="number"
-				value={hours}
-				oninput={handleHoursChange}
-				placeholder="0"
-			/>
+			<Input type="number" value={hours} oninput={handleHoursChange} placeholder="0" />
 			<span class="text-sm text-gray-600">Hours</span>
 		</div>
 		<div class="flex items-center gap-2">
-			<Input
-				type="number"
-				value={minutes}
-				oninput={handleMinutesChange}
-				placeholder="0"
-			/>
+			<Input type="number" value={minutes} oninput={handleMinutesChange} placeholder="0" />
 			<span class="text-sm text-gray-600">Minutes</span>
 		</div>
 	</div>
