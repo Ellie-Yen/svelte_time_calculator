@@ -6,13 +6,7 @@
 </script>
 
 <div class="flex flex-col gap-2">
-	<Button variant="secondary" onclick={onReset}>
-		Reset Duration
-	</Button>
-	<Button variant="primary" onclick={onSwitch}>
-		Switch Input/Result
-	</Button>
-	<Button variant="danger" onclick={onResetAll}>
-		Reset All
-	</Button>
+	<Button variant="secondary" onclick={onReset}>Reset Duration</Button>
+	<Button variant="primary" onclick={onSwitch}>Switch Input/Result</Button>
+	<Button variant="danger" onclick={onResetAll}>Reset All</Button>
 </div>
