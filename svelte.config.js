@@ -14,7 +14,10 @@ const config = {
 			fallback: 'index.html',
 			precompress: false,
 			strict: false
-		})
+		}),
+		paths: {
+			base: process.env.NODE_ENV === 'production' ? '/svelte_time_calculator' : ''
+		}
 	}
 };
 
